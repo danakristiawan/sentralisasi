@@ -33,9 +33,6 @@
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="<?= base_url('../internal'); ?>"><i class="fa fa-th-large"></i>&nbsp; Internal</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="<?= base_url('auth/logout'); ?>" onclick="return confirm('Apakah Anda yakin akan keluar dari aplikasi ini?')"><i class="fa fa-power-off"></i> Logout</a>
         </li>
       </ul>

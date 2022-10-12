@@ -30,17 +30,15 @@
                   <tbody>
                     <?php $no = 0;
                     $total = 0;
-                    foreach ($bank as $r) : $no++; ?>
+                    foreach ($bank as $r) : $no++;
+                      $query = $this->db->get_where('view_per_bank', ['bulan' => $bln, 'tahun' => $thn, 'kdsubanak' => $r['nama']])->row_array();
+                      $query ? $jml = $query['jumlah'] : $jml = 0;
+                    ?>
                       <tr>
                         <td><?= $no; ?></td>
                         <td><?= $r['kode']; ?></td>
                         <td><?= $r['nama']; ?></td>
-                        <td>
-                          <?php
-                          $query = $this->db->get_where('view_per_bank', ['bulan' => $bln, 'tahun' => $thn, 'kdsubanak' => $r['nama']])->row_array();
-                          echo $query['jumlah'];
-                          ?>
-                        </td>
+                        <td> <?= $jml; ?></td>
                         <td>
                           <a href="<?= base_url('per-bank/file/') . $r['nama'] . '/'  . $bln . '/' . $thn; ?>" target="_blank">
                             <i class="fa fa-file-pdf-o"></i>
@@ -48,7 +46,7 @@
                         <td><a href="<?= base_url('per-bank/satker/') . $r['nama'] . '/'  . $bln . '/' . $thn; ?>"><i class="fa fa-search"></i></a></td>
                       </tr>
                     <?php
-                      $total += $query['jumlah'];
+                      $total += $jml;
                     endforeach; ?>
                   </tbody>
                   <thead>

@@ -57,7 +57,7 @@
                         </td>
                         <td><a href="<?= base_url('dok-gaji/detail/') . $kdsatker . '/'  . $bln . '/' . $thn; ?>"><i class="fa fa-search"></i></a>
                         </td>
-                        <td><?= $s['date_created'] == null ? '' : date('d-m-Y H:i:s', $s['date_created']); ?></td>
+                        <td><?= $s ? date('d-m-Y H:i:s', $s['date_created']) : ''; ?></td>
                       </tr>
                     <?php
                       $total += $q['jml'];
@@ -67,7 +67,7 @@
                     <tr>
                       <th colspan="3">Jumlah</th>
                       <th><?= number_format($total, 0, ',', '.'); ?></th>
-                      <th></th>
+                      <th colspan="3"></th>
                     </tr>
                   </thead>
                 </table>

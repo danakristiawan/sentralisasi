@@ -29,23 +29,28 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($bulan as $s) : ?>
+                    <?php foreach ($bulan as $s) :
+                      $kdsatker = getSatker();
+                      $bln = $s['kode'];
+                      $thn = $r['tahun'];
+                      $dokumen = $this->db->get_where('data_register', ['kdsatker' => $kdsatker, 'bulan' => $bln, 'tahun' => $thn])->row_array();
+                    ?>
                       <tr>
+
                         <td><?= $s['bulan']; ?></td>
-                        <td>
-                          <?php
-                          $kdsatker = getSatker();
-                          $bln = $s['kode'];
-                          $thn = $r['tahun'];
-                          $dokumen = $this->db->get_where('data_register', ['kdsatker' => $kdsatker, 'bulan' => $bln, 'tahun' => $thn])->row_array();
-                          echo $dokumen['jumlah'];
-                          ?>
-                        </td>
-                        <td>
-                          <?php if ($dokumen) : ?>
+
+                        <?php if ($dokumen) : ?>
+                          <td>
+                            <?= $dokumen['jumlah']; ?>
+                          </td>
+                          <td>
                             <a href="<?= base_url('home/detail/') . $bln . '/' . $thn; ?>"><i class="fa fa-search"></i></a>
-                          <?php endif; ?>
-                        </td>
+                          </td>
+                        <?php else : ?>
+                          <td></td>
+                          <td></td>
+                        <?php endif; ?>
+
                       </tr>
                     <?php endforeach; ?>
                   </tbody>

@@ -39,33 +39,33 @@
                         <?php
                         $kdsatker = $r['kode'];
                         $s = $this->db->query("SELECT COUNT(jumlah) AS jml FROM data_uang_makan WHERE kdsatker='$kdsatker' AND bulan='$bln' AND tahun='$thn' GROUP BY kdsatker,tahun,bulan")->row_array();
-                        $jml = $s['jml'];
+                        $s ? $jmla = $s['jml'] : $jmla = 0;
+                        $q = $this->db->query("SELECT jumlah AS jml,file,sts FROM data_uang_makan WHERE kdsatker='$kdsatker' AND bulan='$bln' AND tahun='$thn'")->row_array();
+                        $q ? $jmlb = $q['jml'] : $jmlb = 0;
+                        $q ? $file = $q['file'] : $file = '';
                         ?>
-                        <td><a href="<?= base_url('dok-um/detail/') . $kdsatker . "/" . $thn . "/" . $bln; ?>"><?= $jml; ?></a></td>
-                        <td>
-                          <?php
-                          $q = $this->db->query("SELECT jumlah,file,sts FROM data_uang_makan WHERE kdsatker='$kdsatker' AND bulan='$bln' AND tahun='$thn'")->row_array();
-                          ?>
-                          <?= $q['jumlah']; ?>
-                        </td>
-                        <td><a href="<?= base_url('assets/files/') . $q['file']; ?>" download="download">
-                            <i class="fa <?= $q['file'] == null ? '' : 'fa-file-pdf-o'; ?>"></i>
+                        <td><a href="<?= base_url('dok-um/detail/') . $kdsatker . "/" . $thn . "/" . $bln; ?>"><?= $jmla; ?></a></td>
+                        <td><?= $jmlb; ?></td>
+                        <td><a href="<?= base_url('assets/files/') . $file; ?>" download="download">
+                            <i class="fa <?= $file == '' ? '' : 'fa-file-pdf-o'; ?>"></i>
                           </a></td>
                         <td>
-                          <?php if ($q['sts'] == '1') : ?>
-                            <span class="text-primary">terkirim</span>
-                          <?php else : ?>
-                            <span class="text-primary"></span>
+                          <?php if ($q) : ?>
+                            <?php if ($q['sts'] == '1') : ?>
+                              <span class="text-primary">terkirim</span>
+                            <?php else : ?>
+                              <span class="text-primary"></span>
+                            <?php endif; ?>
                           <?php endif; ?>
                         </td>
                       </tr>
                     <?php
-                      $total += $q['jumlah'];
+                      $total += $jmlb;
                     endforeach; ?>
                   </tbody>
                   <thead>
                     <tr>
-                      <th colspan="3">Jumlah</th>
+                      <th colspan="4">Jumlah</th>
                       <th><?= number_format($total, 0, ',', '.'); ?></th>
                       <th></th>
                       <th></th>

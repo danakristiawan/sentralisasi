@@ -30,31 +30,35 @@
                   <tbody>
                     <?php $no = 0;
                     $total = 0;
-                    foreach ($satker as $r) : $no++; ?>
+                    foreach ($satker as $r) : $no++;
+                      $kdsatker = $r['kode'];
+                      $q = $this->db->query("SELECT jumlah,file,sts FROM data_uang_lembur WHERE kdsatker='$kdsatker' AND bulan='$bln' AND tahun='$thn'")->row_array();
+                      $q ? $jml = $q['jumlah'] : $jml = 0;
+                    ?>
                       <tr>
                         <td><?= $no; ?></td>
                         <td><?= $r['kode']; ?></td>
                         <td><?= $r['nama']; ?></td>
-                        <td>
-                          <?php
-                          $kdsatker = $r['kode'];
-                          $q = $this->db->query("SELECT jumlah,file,sts FROM data_uang_lembur WHERE kdsatker='$kdsatker' AND bulan='$bln' AND tahun='$thn'")->row_array();
-                          ?>
-                          <?= $q['jumlah']; ?>
-                        </td>
-                        <td><a href="<?= base_url('assets/files/') . $q['file']; ?>" download="download">
-                            <i class="fa <?= $q['file'] == null ? '' : 'fa-file-pdf-o'; ?>"></i>
-                          </a></td>
-                        <td>
-                          <?php if ($q['sts'] == '1') : ?>
-                            <span class="text-primary">terkirim</span>
-                          <?php else : ?>
-                            <span class="text-primary"></span>
-                          <?php endif; ?>
-                        </td>
+                        <?php if ($q) : ?>
+                          <td><?= $q['jumlah']; ?></td>
+                          <td><a href="<?= base_url('assets/files/') . $q['file']; ?>" download="download">
+                              <i class="fa <?= $q['file'] == null ? '' : 'fa-file-pdf-o'; ?>"></i>
+                            </a></td>
+                          <td>
+                            <?php if ($q['sts'] == '1') : ?>
+                              <span class="text-primary">terkirim</span>
+                            <?php else : ?>
+                              <span class="text-primary"></span>
+                            <?php endif; ?>
+                          </td>
+                        <?php else : ?>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        <?php endif; ?>
                       </tr>
                     <?php
-                      $total += $q['jumlah'];
+                      $total += $jml;
                     endforeach; ?>
                   </tbody>
                   <thead>
